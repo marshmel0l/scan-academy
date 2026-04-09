@@ -1,0 +1,462 @@
+@custom-variant dark (&:is(.dark *));
+
+/* ═══════════════════════════════════════════════════════════════════
+   SCAN ACADEMY — PREMIUM MEDICAL DESIGN SYSTEM v1.0
+   Medical · Clean · Modern · Trustworthy
+   ═══════════════════════════════════════════════════════════════════
+
+   USAGE GUIDE
+   ────────────────────────────────────────────────────────────────
+   PRIMARY (brand-*)     → CTAs, links, brand identity, icons
+   SECONDARY (cyan-*)    → Gradient endpoints, secondary accents
+   ACCENT (teal-*)       → Checkmarks, certificates, trust signals
+   NEUTRAL (sn-*)        → Text, backgrounds, cards, borders
+   STATUS (ss-*)         → Feedback states (success/error/warning)
+
+   CTA BUTTONS
+     Default:  bg-[--brand-600]   → #2563EB
+     Hover:    bg-[--brand-700]   → #1D4ED8   (darker, not lighter)
+     Ghost:    border-[--brand-200] text-[--brand-700]
+     Danger:   bg-[--ss-error]    → #DC2626
+
+   SECTION BACKGROUNDS (alternating pattern)
+     Hero      → #FFFFFF  (pure white  — maximum clarity)
+     About     → #FFFFFF  (pure white  — continuity)
+     Social    → #F8FAFC  (slate-50   — soft contrast rest)
+     Pricing   → #F8FAFC  (slate-50   — consistent alt)
+     CTA       → gradient from --brand-700 to --cyan-600
+
+   SHADOWS
+     Card:   --shadow-card    (very soft, for card surfaces)
+     Hover:  --shadow-hover   (lifted blue glow, for interactive cards)
+     Brand:  --shadow-blue    (strong blue glow, for primary CTAs)
+
+   HERO GRADIENT (background)
+     background: var(--grad-hero);  — EFF6FF → DBEAFE → ECFEFF
+
+   HOVER EFFECTS
+     Cards:  hover:-translate-y-1 + hover:shadow-[--shadow-hover]
+     CTAs:   hover:-translate-y-0.5 + hover:shadow-[--shadow-blue]
+     Links:  color transition to var(--brand-600)
+
+   BORDER / DIVIDER COLORS
+     Between same-bg sections → var(--border-subtle)  #F1F5F9
+     Card borders             → var(--border-light)   #E2E8F0
+     Emphasized borders       → var(--border-mid)     #CBD5E1
+     Branded borders          → var(--border-brand)   #BFDBFE
+   ═══════════════════════════════════════════════════════════════════ */
+
+:root {
+  --font-size: 16px;
+
+  /* ── Font families ─────────────────────────────────────────────── */
+  --font-body:    'Inter', sans-serif;
+  --font-heading: 'Montserrat', sans-serif;
+  --font-arabic:  'Cairo', 'Tajawal', sans-serif;
+
+  /* ── Shadcn / Tailwind base tokens (unchanged) ────────────────── */
+  --background: #ffffff;
+  --foreground: oklch(0.145 0 0);
+  --card: #ffffff;
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: #2563EB;           /* updated → brand-600 */
+  --primary-foreground: #ffffff;
+  --secondary: oklch(0.95 0.0058 264.53);
+  --secondary-foreground: #030213;
+  --muted: #ececf0;
+  --muted-foreground: #717182;
+  --accent: #e9ebef;
+  --accent-foreground: #030213;
+  --destructive: #DC2626;       /* updated → status-error */
+  --destructive-foreground: #ffffff;
+  --border: rgb(0 0 0 / 0.08);
+  --input: transparent;
+  --input-background: #F1F5F9;
+  --switch-background: #CBD5E1;
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+  --ring: #93C5FD;
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --radius: 0.625rem;
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: #2563EB;
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+
+  /* ══════════════════════════════════════════════════════════
+     § 1  PRIMARY — Medical Royal Blue
+          #EFF6FF (50) → #2563EB (600, main) → #1E3A8A (900)
+          Use for: CTAs, primary buttons, links, icons, brand marks
+     ══════════════════════════════════════════════════════════ */
+  --brand-50:  #EFF6FF;   /* faint bg tints, badge fills          */
+  --brand-100: #DBEAFE;   /* pill bg, highlight zones             */
+  --brand-200: #BFDBFE;   /* hover border color, ring             */
+  --brand-300: #93C5FD;   /* decorative dots, divider accents     */
+  --brand-400: #60A5FA;   /* secondary icons, stat highlights     */
+  --brand-500: #3B82F6;   /* icon fills, secondary active state   */
+  --brand-600: #2563EB;   /* ★ MAIN CTA — buttons, active links  */
+  --brand-700: #1D4ED8;   /* CTA hover, darker tone               */
+  --brand-800: #1E40AF;   /* dark headings on light bg            */
+  --brand-900: #1E3A8A;   /* footer brand marks, deep emphasis    */
+
+  /* ══════════════════════════════════════════════════════════
+     § 2  SECONDARY — Clinical Cyan
+          #ECFEFF (50) → #06B6D4 (500, secondary) → #164E63 (900)
+          Use for: gradient endpoints paired with brand-600,
+          progress indicators, secondary badges, data viz
+     ══════════════════════════════════════════════════════════ */
+  --cyan-50:  #ECFEFF;
+  --cyan-100: #CFFAFE;
+  --cyan-200: #A5F3FC;
+  --cyan-300: #67E8F9;
+  --cyan-400: #22D3EE;
+  --cyan-500: #06B6D4;   /* ★ SECONDARY ACCENT                   */
+  --cyan-600: #0891B2;
+  --cyan-700: #0E7490;
+  --cyan-800: #155E75;
+  --cyan-900: #164E63;
+
+  /* ══════════════════════════════════════════════════════════
+     § 3  ACCENT — Verification Teal
+          #F0FDFA (50) → #14B8A6 (500, accent) → #134E4A (900)
+          Use for: checkmarks, certificate icons, trust signals,
+          "verified" badges, success-adjacent visual elements
+     ══════════════════════════════════════════════════════════ */
+  --teal-50:  #F0FDFA;
+  --teal-100: #CCFBF1;
+  --teal-200: #99F6E4;
+  --teal-300: #5EEAD4;
+  --teal-400: #2DD4BF;
+  --teal-500: #14B8A6;   /* ★ ACCENT                             */
+  --teal-600: #0D9488;
+  --teal-700: #0F766E;
+  --teal-800: #115E59;
+  --teal-900: #134E4A;
+
+  /* ══════════════════════════════════════════════════════════
+     § 4  NEUTRAL — Clinical Slate Scale
+          Full grayscale palette for text, surfaces, borders
+          Map: sn-0=white, sn-50=lightest bg, sn-900=darkest text
+     ══════════════════════════════════════════════════════════ */
+  --sn-0:   #FFFFFF;   /* Hero, card surfaces, modal bg        */
+  --sn-50:  #F8FAFC;   /* Alt section bg, input bg, code bg   */
+  --sn-100: #F1F5F9;   /* Hover surface, soft section border   */
+  --sn-200: #E2E8F0;   /* Standard card border, input border   */
+  --sn-300: #CBD5E1;   /* Emphasized border, disabled          */
+  --sn-400: #94A3B8;   /* Placeholder text, muted icons        */
+  --sn-500: #64748B;   /* Body text — secondary                */
+  --sn-600: #475569;   /* Body text — primary                  */
+  --sn-700: #334155;   /* Subheadings, strong body             */
+  --sn-800: #1E293B;   /* Page headings h2–h4                  */
+  --sn-900: #0F172A;   /* H1, darkest headings, footer text    */
+
+  /* ═════════════════════════════════════════════════════════
+     § 5  TEXT HIERARCHY
+          Semantic aliases for consistent typographic contrast
+     ══════════════════════════════════════════════════════════ */
+  --text-heading:  #0F172A;   /* h1, h2 — WCAG AAA contrast         */
+  --text-subhead:  #1E293B;   /* h3, h4 — strong secondary heading   */
+  --text-body:     #334155;   /* Paragraphs — comfortable reading    */
+  --text-muted:    #64748B;   /* Captions, subtitles, fine print     */
+  --text-subtle:   #94A3B8;   /* Meta, timestamps, inactive labels   */
+  --text-inverse:  #FFFFFF;   /* Text on dark/blue backgrounds       */
+  --text-brand:    #2563EB;   /* Branded inline text, links          */
+
+  /* ══════════════════════════════════════════════════════════
+     § 6  STATUS COLORS
+          Semantic feedback colors for form states and alerts
+     ══════════════════════════════════════════════════════════ */
+  --ss-success:        #16A34A;   /* green-600  — confirmed, valid       */
+  --ss-success-light:  #DCFCE7;   /* green-100  — success bg             */
+  --ss-success-border: #BBF7D0;   /* green-200  — success border         */
+  --ss-error:          #DC2626;   /* red-600    — invalid, danger        */
+  --ss-error-light:    #FEE2E2;   /* red-100    — error bg               */
+  --ss-error-border:   #FECACA;   /* red-200    — error border           */
+  --ss-warning:        #D97706;   /* amber-600  — caution, notice        */
+  --ss-warning-light:  #FEF3C7;   /* amber-100  — warning bg             */
+  --ss-warning-border: #FDE68A;   /* amber-200  — warning border         */
+  --ss-info:           #0891B2;   /* cyan-600   — informational          */
+  --ss-info-light:     #CFFAFE;   /* cyan-100   — info bg                */
+  --ss-info-border:    #A5F3FC;   /* cyan-200   — info border            */
+
+  /* ══════════════════════════════════════════════════════════
+     § 7  BORDERS & DIVIDERS
+          Use these semantic tokens for consistency
+     ══════════════════════════════════════════════════════════ */
+  --border-subtle:  #F1F5F9;   /* sn-100 — between same-color sections  */
+  --border-light:   #E2E8F0;   /* sn-200 — card borders, input frames   */
+  --border-mid:     #CBD5E1;   /* sn-300 — emphasized, table lines      */
+  --border-brand:   #BFDBFE;   /* brand-200 — branded highlights        */
+  --border-brand-strong: #93C5FD; /* brand-300 — active/focus rings     */
+
+  /* ══════════════════════════════════════════════════════════
+     § 8  SHADOWS
+          Subtle depth system for elevation model
+     ══════════════════════════════════════════════════════════ */
+  --shadow-xs:    0 1px 2px rgba(15,23,42,0.05);
+  --shadow-card:  0 1px 3px rgba(15,23,42,0.06), 0 4px 12px rgba(15,23,42,0.04);
+  --shadow-md:    0 4px 16px rgba(15,23,42,0.08), 0 2px 6px rgba(15,23,42,0.04);
+  --shadow-lg:    0 8px 24px rgba(15,23,42,0.10), 0 4px 8px rgba(15,23,42,0.06);
+  --shadow-blue:  0 8px 32px rgba(37,99,235,0.20), 0 2px 8px rgba(37,99,235,0.10);
+  --shadow-hover: 0 12px 40px rgba(37,99,235,0.16), 0 2px 8px rgba(15,23,42,0.06);
+
+  /* ══════════════════════════════════════════════════════��═══
+     § 9  GRADIENTS
+          Pre-built gradient strings for common use cases
+     ══════════════════════════════════════════════════════════ */
+  /* Hero section background — EFF6FF → DBEAFE → ECFEFF                */
+  --grad-hero:      linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 50%, #ECFEFF 100%);
+  /* Primary brand gradient — CTA banners, highlighted cards           */
+  --grad-brand:     linear-gradient(135deg, #2563EB 0%, #0891B2 100%);
+  /* Final CTA section background                                      */
+  --grad-cta:       linear-gradient(135deg, #1D4ED8 0%, #2563EB 55%, #0891B2 100%);
+  /* Section background transition — white to near-white               */
+  --grad-section:   linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%);
+  /* Divider line gradient — transparent → slate-200 → transparent     */
+  --grad-divider:   linear-gradient(90deg, transparent 0%, #E2E8F0 25%, #E2E8F0 75%, transparent 100%);
+  /* Branded divider — transparent → brand-200 → transparent           */
+  --grad-divider-brand: linear-gradient(90deg, transparent 0%, #BFDBFE 25%, #BFDBFE 75%, transparent 100%);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.145 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.145 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.985 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.396 0.141 25.723);
+  --destructive-foreground: oklch(0.637 0.237 25.331);
+  --border: oklch(0.269 0 0);
+  --input: oklch(0.269 0 0);
+  --ring: oklch(0.439 0 0);
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(0.269 0 0);
+  --sidebar-ring: oklch(0.439 0 0);
+}
+
+@theme inline {
+  /* ── Shadcn base color tokens ──────────────────────────────────── */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-input-background: var(--input-background);
+  --color-switch-background: var(--switch-background);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* ── Scan Academy brand palette — usable as Tailwind utilities ─── */
+  /* Primary: Medical Royal Blue (bg-brand-600, text-brand-600, etc.) */
+  --color-brand-50:  var(--brand-50);
+  --color-brand-100: var(--brand-100);
+  --color-brand-200: var(--brand-200);
+  --color-brand-300: var(--brand-300);
+  --color-brand-400: var(--brand-400);
+  --color-brand-500: var(--brand-500);
+  --color-brand-600: var(--brand-600);
+  --color-brand-700: var(--brand-700);
+  --color-brand-800: var(--brand-800);
+  --color-brand-900: var(--brand-900);
+
+  /* Secondary: Clinical Cyan (bg-med-cyan-500, etc.) */
+  --color-med-cyan-50:  var(--cyan-50);
+  --color-med-cyan-100: var(--cyan-100);
+  --color-med-cyan-200: var(--cyan-200);
+  --color-med-cyan-300: var(--cyan-300);
+  --color-med-cyan-400: var(--cyan-400);
+  --color-med-cyan-500: var(--cyan-500);
+  --color-med-cyan-600: var(--cyan-600);
+  --color-med-cyan-700: var(--cyan-700);
+  --color-med-cyan-800: var(--cyan-800);
+  --color-med-cyan-900: var(--cyan-900);
+
+  /* Accent: Verification Teal (bg-med-teal-500, etc.) */
+  --color-med-teal-50:  var(--teal-50);
+  --color-med-teal-100: var(--teal-100);
+  --color-med-teal-200: var(--teal-200);
+  --color-med-teal-300: var(--teal-300);
+  --color-med-teal-400: var(--teal-400);
+  --color-med-teal-500: var(--teal-500);
+  --color-med-teal-600: var(--teal-600);
+  --color-med-teal-700: var(--teal-700);
+  --color-med-teal-800: var(--teal-800);
+  --color-med-teal-900: var(--teal-900);
+
+  /* Neutral Clinical Slate (bg-sn-50, text-sn-700, etc.) */
+  --color-sn-50:  var(--sn-50);
+  --color-sn-100: var(--sn-100);
+  --color-sn-200: var(--sn-200);
+  --color-sn-300: var(--sn-300);
+  --color-sn-400: var(--sn-400);
+  --color-sn-500: var(--sn-500);
+  --color-sn-600: var(--sn-600);
+  --color-sn-700: var(--sn-700);
+  --color-sn-800: var(--sn-800);
+  --color-sn-900: var(--sn-900);
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    font-size: var(--font-size);
+    height: 100%;
+    direction: ltr !important; /* Lock scrollbar to the right side */
+    scrollbar-gutter: stable;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-body);
+    height: 100%;
+    direction: ltr !important; /* Lock scrollbar to the right side */
+  }
+
+  /* ── Custom Theme Scrollbar ── */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--brand-300);
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--brand-500);
+  }
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--brand-300) transparent;
+  }
+
+  /* Auto-switch to Arabic font stack when direction is RTL */
+  [dir="rtl"] body,
+  [dir="rtl"] {
+    font-family: var(--font-arabic);
+  }
+
+  h1 {
+    font-size: var(--text-2xl);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+    font-family: var(--font-heading);
+  }
+
+  h2 {
+    font-size: var(--text-xl);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+    font-family: var(--font-heading);
+  }
+
+  h3 {
+    font-size: var(--text-lg);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+    font-family: var(--font-heading);
+  }
+
+  h4 {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+    font-family: var(--font-heading);
+  }
+
+  /* In RTL context, headings also switch to the Arabic stack */
+  [dir="rtl"] h1,
+  [dir="rtl"] h2,
+  [dir="rtl"] h3,
+  [dir="rtl"] h4 {
+    font-family: var(--font-arabic);
+  }
+
+  label {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  button {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  input {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-normal);
+    line-height: 1.5;
+  }
+}
