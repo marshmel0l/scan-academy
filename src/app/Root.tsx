@@ -1,5 +1,5 @@
 // Root layout — wraps all pages with Navbar, Footer, language support, and page transitions
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useOutlet, useLocation } from 'react-router';
 import { motion, AnimatePresence } from 'motion/react';
 import { Navbar } from './components/Navbar';
@@ -35,8 +35,17 @@ import React from 'react'; // ensure React is available for cloneElement
 function PageWrapper({ location, element }: { location: any, element: React.ReactElement | null }) {
   const isSimulator = location.pathname === '/simulator';
 
-  // Ensures we only scroll or jump *after* this new route's page structure mounts
+  const isMounted = useRef(false);
+
+  // Ensures we only scroll or jump *after* this new route's page structure mounts.
+  // On initial mount we always go to the top, ignoring any stale hash in the URL.
   useEffect(() => {
+    if (!isMounted.current) {
+      // First render — always start at the top regardless of URL hash
+      isMounted.current = true;
+      window.scrollTo(0, 0);
+      return;
+    }
     if (location.hash) {
       setTimeout(() => {
         const el = document.querySelector(location.hash);
