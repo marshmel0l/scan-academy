@@ -568,16 +568,7 @@ export function HeroSection() {
             <ChestXrayCanvas />
           </motion.div>
 
-          {/* DICOM chip */}
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.9 }}
-            className="absolute top-4 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-white/80 backdrop-blur-sm border border-blue-200 rounded-full shadow-sm pointer-events-none m-[0px] px-[11px] py-[4px]"
-          >
-            <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
-            <span className="text-[10px] font-mono text-slate-600 tracking-wide">PA CHEST 14 kV - 32 mA</span>
-          </motion.div>
+
 
           {/* L / R markers — anatomically correct */}
           {[

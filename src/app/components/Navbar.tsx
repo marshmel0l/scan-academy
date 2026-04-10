@@ -123,11 +123,11 @@ export function Navbar() {
                   }}
                 >
                   <Logo className="h-10 w-10 object-contain transition-transform duration-300 group-hover:scale-105" />
-                  <div className="leading-none hidden sm:block">
-                    <div className="text-slate-900 font-bold text-base tracking-tight">
+                  <div className="leading-none">
+                    <div className="text-slate-900 font-bold text-sm sm:text-base tracking-tight" style={{ fontFamily: 'var(--font-heading)' }}>
                       Scan <span className="text-blue-600">Academy</span>
                     </div>
-                    <div className="text-slate-400 text-[11px]">
+                    <div className="text-slate-400 text-[10px] sm:text-[11px]">
                       {isAr ? 'تدريب الأشعة الطبية' : 'Medical Radiology Courses'}
                     </div>
                   </div>
