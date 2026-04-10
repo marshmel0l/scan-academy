@@ -575,25 +575,7 @@ export function HeroSection() {
             >{m.label}</motion.span>
           ))}
 
-          {/* Anatomy hotspot dots */}
-          {hotspots.map(h2 => (
-            <motion.div
-              key={h2.label}
-              initial={{ opacity: 0, scale: 0 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.35, delay: h2.delay, type: 'spring', stiffness: 240 }}
-              className="absolute"
-              style={{ left: h2.x, top: h2.y }}
-            >
-              <div className="relative group cursor-default">
-                <div className="w-2 h-2 bg-blue-500 rounded-full border-2 border-white shadow-md" />
-                <div className="absolute start-3.5 top-1/2 -translate-y-1/2 hidden group-hover:flex bg-slate-900/90 text-white text-[9px] px-1.5 py-0.5 rounded-md whitespace-nowrap z-10">
-                  {h2.label}
-                </div>
-                <div className="absolute inset-0 rounded-full bg-blue-400 animate-ping opacity-35" />
-              </div>
-            </motion.div>
-          ))}
+
 
           {/* Interact hint */}
           <motion.div
