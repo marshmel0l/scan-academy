@@ -444,15 +444,7 @@ export function HeroSection() {
       className="relative bg-white min-h-[calc(100svh-64px)] flex flex-col lg:block"
     >
 
-      {/* Subtle dot-grid */}
-      <div
-        className="absolute inset-0 opacity-[0.032]"
-        style={{
-          backgroundImage:
-            'linear-gradient(#2563eb 1px,transparent 1px),linear-gradient(90deg,#2563eb 1px,transparent 1px)',
-          backgroundSize: '52px 52px',
-        }}
-      />
+
       {/* Right-side blue tint */}
       <div className="absolute right-0 top-0 w-full lg:w-1/2 h-full bg-gradient-to-b lg:bg-gradient-to-l from-blue-50/65 to-transparent pointer-events-none" />
 
