@@ -24,8 +24,9 @@ interface BodyPart {
 }
 
 interface View {
-  id: 'PA' | 'LAT' | 'AP';
+  id: string;
   label: string;
+  labelAr: string;
 }
 
 interface TechParams {
@@ -41,38 +42,110 @@ interface CommonCase {
   title: string;
   badge: 'NORMAL' | 'FRACTURE' | 'DISLOCATION';
   descAr: string;
+  desc: string;
+}
+
+// Image mapping from your images folder
+const EXAM_IMAGES: Record<string, Record<string, string>> = {
+  hand: {
+    PA: '/images/hand-pa.jpg',
+    LAT: '/images/hand-lat.jpg',
+    OBL: '/images/hand-obl.jpg',
+  },
+  wrist: {
+    PA: '/images/wrist-pa.jpg',
+    LAT: '/images/wrist-lat.jpg',
+    OBL: '/images/wrist-obl.jpg',
+  },
+  forearm: {
+    AP: '/images/forearm-ap.jpg',
+    LAT: '/images/forearm-lat.jpg',
+  },
+  elbow: {
+    AP: '/images/elbow-ap.jpg',
+    LAT: '/images/elbow-lat.jpg',
+    OBL: '/images/elbow-obl.jpg',
+  },
+  humerus: {
+    AP: '/images/humerus-ap.jpg',
+    LAT: '/images/humerus-lat.jpg',
+  },
+  shoulder: {
+    AP: '/images/shoulder-joint-ap.jpg',
+    LAT: '/images/shoulder-joint-lat.jpg',
+  },
+  knee: {
+    AP: '/images/knee-ap.jpg',
+    LAT: '/images/knee-lat.jpg',
+    OBL: '/images/knee-obl.jpg',
+  },
+  ankle: {
+    AP: '/images/ankle-ap.jpg',
+    LAT: '/images/ankle-lat.jpg',
+    OBL: '/images/ankle-obl.jpg',
+  },
+  foot: {
+    AP: '/images/foot-ap.jpg',
+    LAT: '/images/foot-lat.jpg',
+    OBL: '/images/foot-obl.jpg',
+  },
+  chest: {
+    PA: '/images/chest-pa.jpg',
+    LAT: '/images/chest-lat.jpg',
+    AP: '/images/chest-ap.jpg',
+  },
+};
+
+function getExamImage(partId: string, viewId: string): string | null {
+  const partImages = EXAM_IMAGES[partId];
+  if (!partImages) return null;
+  return partImages[viewId] || Object.values(partImages)[0] || null;
 }
 
 const VIEWS: View[] = [
-  { id: 'PA', label: 'PA' },
-  { id: 'LAT', label: 'LAT' },
-  { id: 'AP', label: 'AP' },
+  { id: 'PA', label: 'PA', labelAr: 'أمامي خلفي' },
+  { id: 'LAT', label: 'LAT', labelAr: 'جانبي' },
+  { id: 'AP', label: 'AP', labelAr: 'خلفي أمامي' },
+  { id: 'OBL', label: 'OBL', labelAr: 'مائل' },
 ];
 
 const BODY_REGIONS: BodyRegion[] = [
   {
-    id: 'knee',
-    label: 'Knee',
-    labelAr: 'الركبة',
-    x: '48%',
-    y: '68%',
+    id: 'head',
+    label: 'Head',
+    labelAr: 'الرأس',
+    x: '50%',
+    y: '8%',
     parts: [
-      { id: 'thigh', label: 'Thigh', labelAr: 'الخذل' },
-      { id: 'knee', label: 'Knee', labelAr: 'الركبة' },
-      { id: 'leg', label: 'Leg', labelAr: 'الساق' },
-      { id: 'foot', label: 'Foot', labelAr: 'القدم' },
+      { id: 'skull', label: 'Skull', labelAr: 'الجمجمة' },
+      { id: 'sinuses', label: 'Sinuses', labelAr: 'الجيوب الأنفية' },
+      { id: 'jaw', label: 'Jaw', labelAr: 'الفك' },
+      { id: 'cervical', label: 'Cervical Spine', labelAr: 'الفقرات العنقية' },
+    ],
+  },
+  {
+    id: 'chest',
+    label: 'Chest',
+    labelAr: 'الصدر',
+    x: '50%',
+    y: '28%',
+    parts: [
+      { id: 'chest', label: 'Chest', labelAr: 'القفص الصدري' },
+      { id: 'ribs', label: 'Ribs', labelAr: 'الأضلاع' },
+      { id: 'heart', label: 'Heart', labelAr: 'القلب' },
+      { id: 'lungs', label: 'Lungs', labelAr: 'الرئتان' },
     ],
   },
   {
     id: 'shoulder',
     label: 'Shoulder',
     labelAr: 'الكتف',
-    x: '30%',
-    y: '28%',
+    x: '32%',
+    y: '22%',
     parts: [
-      { id: 'shoulder', label: 'Shoulder', labelAr: 'الكتف' },
+      { id: 'shoulder', label: 'Shoulder Joint', labelAr: 'مفصل الكتف' },
       { id: 'clavicle', label: 'Clavicle', labelAr: 'الترقوة' },
-      { id: 'upper-arm', label: 'Upper Arm', labelAr: 'العضد' },
+      { id: 'scapula', label: 'Scapula', labelAr: 'عظم اللوح' },
     ],
   },
   {
@@ -80,11 +153,33 @@ const BODY_REGIONS: BodyRegion[] = [
     label: 'Shoulder',
     labelAr: 'الكتف',
     x: '68%',
-    y: '28%',
+    y: '22%',
     parts: [
-      { id: 'shoulder', label: 'Shoulder', labelAr: 'الكتف' },
+      { id: 'shoulder', label: 'Shoulder Joint', labelAr: 'مفصل الكتف' },
       { id: 'clavicle', label: 'Clavicle', labelAr: 'الترقوة' },
-      { id: 'upper-arm', label: 'Upper Arm', labelAr: 'العضد' },
+      { id: 'scapula', label: 'Scapula', labelAr: 'عظم اللوح' },
+    ],
+  },
+  {
+    id: 'humerus',
+    label: 'Arm',
+    labelAr: 'الذراع',
+    x: '22%',
+    y: '38%',
+    parts: [
+      { id: 'humerus', label: 'Humerus', labelAr: 'العضد' },
+      { id: 'elbow', label: 'Elbow', labelAr: 'الكوع' },
+    ],
+  },
+  {
+    id: 'humerus-r',
+    label: 'Arm',
+    labelAr: 'الذراع',
+    x: '78%',
+    y: '38%',
+    parts: [
+      { id: 'humerus', label: 'Humerus', labelAr: 'العضد' },
+      { id: 'elbow', label: 'Elbow', labelAr: 'الكوع' },
     ],
   },
   {
@@ -103,7 +198,7 @@ const BODY_REGIONS: BodyRegion[] = [
     id: 'wrist-r',
     label: 'Wrist',
     labelAr: 'الرسغ',
-    x: '76%',
+    x: '78%',
     y: '55%',
     parts: [
       { id: 'wrist', label: 'Wrist', labelAr: 'الرسغ' },
@@ -112,14 +207,60 @@ const BODY_REGIONS: BodyRegion[] = [
     ],
   },
   {
+    id: 'spine',
+    label: 'Spine',
+    labelAr: 'العمود الفقري',
+    x: '50%',
+    y: '42%',
+    parts: [
+      { id: 'thoracic', label: 'Thoracic Spine', labelAr: 'الفقرات الصدرية' },
+      { id: 'lumbar', label: 'Lumbar Spine', labelAr: 'الفقرات القطنية' },
+      { id: 'sacral', label: 'Sacrum', labelAr: 'العجز' },
+    ],
+  },
+  {
     id: 'pelvis',
     label: 'Pelvis',
     labelAr: 'الحوض',
-    x: '48%',
-    y: '54%',
+    x: '50%',
+    y: '52%',
     parts: [
-      { id: 'pelvis', label: 'Pelvis', labelAr: 'الحوض' },
-      { id: 'hip', label: 'Hip', labelAr: 'مفصل الورك' },
+      { id: 'pelvis', label: 'Pelvis', labelAr: 'عظام الحوض' },
+      { id: 'hip', label: 'Hip Joint', labelAr: 'مفصل الورك' },
+    ],
+  },
+  {
+    id: 'digestive',
+    label: 'Digestive',
+    labelAr: 'الجهاز الهضمي',
+    x: '50%',
+    y: '46%',
+    parts: [
+      { id: 'esophagus', label: 'Esophagus', labelAr: 'المريء' },
+      { id: 'stomach', label: 'Stomach', labelAr: 'المعدة' },
+      { id: 'intestines', label: 'Intestines', labelAr: 'الأمعاء' },
+    ],
+  },
+  {
+    id: 'knee',
+    label: 'Knee',
+    labelAr: 'الركبة',
+    x: '46%',
+    y: '70%',
+    parts: [
+      { id: 'knee', label: 'Knee', labelAr: 'الركبة' },
+      { id: 'tibia', label: 'Tibia/Fibula', labelAr: 'الساق' },
+    ],
+  },
+  {
+    id: 'knee-r',
+    label: 'Knee',
+    labelAr: 'الركبة',
+    x: '54%',
+    y: '70%',
+    parts: [
+      { id: 'knee', label: 'Knee', labelAr: 'الركبة' },
+      { id: 'tibia', label: 'Tibia/Fibula', labelAr: 'الساق' },
     ],
   },
   {
@@ -127,7 +268,18 @@ const BODY_REGIONS: BodyRegion[] = [
     label: 'Ankle',
     labelAr: 'الكاحل',
     x: '46%',
-    y: '87%',
+    y: '88%',
+    parts: [
+      { id: 'ankle', label: 'Ankle', labelAr: 'الكاحل' },
+      { id: 'foot', label: 'Foot', labelAr: 'القدم' },
+    ],
+  },
+  {
+    id: 'ankle-r',
+    label: 'Ankle',
+    labelAr: 'الكاحل',
+    x: '54%',
+    y: '88%',
     parts: [
       { id: 'ankle', label: 'Ankle', labelAr: 'الكاحل' },
       { id: 'foot', label: 'Foot', labelAr: 'القدم' },
@@ -135,72 +287,109 @@ const BODY_REGIONS: BodyRegion[] = [
   },
 ];
 
-// Technical parameters per body part + view
+// Technical parameters per body part + view (from your HTML file)
 const TECH_PARAMS: Record<string, Record<string, TechParams>> = {
-  knee: {
-    PA: { kvp: 65, mas: 6, exposureTime: 0.07, distance: 100 },
-    LAT: { kvp: 70, mas: 5, exposureTime: 0.06, distance: 100 },
-    AP: { kvp: 68, mas: 5, exposureTime: 0.06, distance: 100 },
+  // Head & Skull
+  skull: {
+    AP: { kvp: 75, mas: 15, exposureTime: 0.20, distance: 100 },
+    LAT: { kvp: 75, mas: 15, exposureTime: 0.20, distance: 100 },
+    PA: { kvp: 75, mas: 15, exposureTime: 0.20, distance: 100 },
   },
-  leg: {
-    PA: { kvp: 60, mas: 5, exposureTime: 0.05, distance: 100 },
-    LAT: { kvp: 62, mas: 5, exposureTime: 0.05, distance: 100 },
-    AP: { kvp: 60, mas: 5, exposureTime: 0.05, distance: 100 },
+  sinuses: {
+    PA: { kvp: 75, mas: 10, exposureTime: 0.15, distance: 100 },
+    LAT: { kvp: 75, mas: 10, exposureTime: 0.15, distance: 100 },
   },
-  thigh: {
-    PA: { kvp: 72, mas: 8, exposureTime: 0.09, distance: 100 },
-    LAT: { kvp: 75, mas: 8, exposureTime: 0.09, distance: 100 },
-    AP: { kvp: 72, mas: 8, exposureTime: 0.09, distance: 100 },
+  cervical: {
+    AP: { kvp: 76, mas: 8, exposureTime: 0.10, distance: 183 },
+    LAT: { kvp: 76, mas: 8, exposureTime: 0.10, distance: 183 },
+    OBL: { kvp: 76, mas: 8, exposureTime: 0.10, distance: 183 },
   },
-  foot: {
-    PA: { kvp: 55, mas: 4, exposureTime: 0.04, distance: 100 },
-    LAT: { kvp: 57, mas: 4, exposureTime: 0.04, distance: 100 },
-    AP: { kvp: 55, mas: 4, exposureTime: 0.04, distance: 100 },
+  // Chest
+  chest: {
+    PA: { kvp: 110, mas: 10, exposureTime: 0.02, distance: 180 },
+    LAT: { kvp: 110, mas: 12, exposureTime: 0.03, distance: 180 },
+    AP: { kvp: 96, mas: 8, exposureTime: 0.03, distance: 100 },
   },
+  ribs: {
+    AP: { kvp: 75, mas: 10, exposureTime: 0.10, distance: 100 },
+    OBL: { kvp: 75, mas: 10, exposureTime: 0.10, distance: 100 },
+  },
+  // Shoulder & Arm
   shoulder: {
-    PA: { kvp: 75, mas: 10, exposureTime: 0.1, distance: 100 },
-    LAT: { kvp: 78, mas: 10, exposureTime: 0.1, distance: 100 },
-    AP: { kvp: 75, mas: 10, exposureTime: 0.1, distance: 100 },
+    AP: { kvp: 75, mas: 8, exposureTime: 0.10, distance: 100 },
+    LAT: { kvp: 75, mas: 8, exposureTime: 0.10, distance: 100 },
   },
-  clavicle: {
-    PA: { kvp: 65, mas: 6, exposureTime: 0.06, distance: 100 },
-    LAT: { kvp: 67, mas: 6, exposureTime: 0.06, distance: 100 },
-    AP: { kvp: 65, mas: 6, exposureTime: 0.06, distance: 100 },
+  humerus: {
+    AP: { kvp: 70, mas: 6, exposureTime: 0.08, distance: 100 },
+    LAT: { kvp: 70, mas: 6, exposureTime: 0.08, distance: 100 },
   },
-  'upper-arm': {
-    PA: { kvp: 68, mas: 7, exposureTime: 0.07, distance: 100 },
-    LAT: { kvp: 70, mas: 7, exposureTime: 0.07, distance: 100 },
-    AP: { kvp: 68, mas: 7, exposureTime: 0.07, distance: 100 },
-  },
-  wrist: {
-    PA: { kvp: 55, mas: 3, exposureTime: 0.03, distance: 100 },
-    LAT: { kvp: 57, mas: 3, exposureTime: 0.03, distance: 100 },
-    AP: { kvp: 55, mas: 3, exposureTime: 0.03, distance: 100 },
-  },
-  hand: {
-    PA: { kvp: 50, mas: 3, exposureTime: 0.03, distance: 100 },
-    LAT: { kvp: 52, mas: 3, exposureTime: 0.03, distance: 100 },
-    AP: { kvp: 50, mas: 3, exposureTime: 0.03, distance: 100 },
+  elbow: {
+    AP: { kvp: 60, mas: 5, exposureTime: 0.06, distance: 100 },
+    LAT: { kvp: 60, mas: 5, exposureTime: 0.06, distance: 100 },
+    OBL: { kvp: 60, mas: 5, exposureTime: 0.06, distance: 100 },
   },
   forearm: {
-    PA: { kvp: 58, mas: 4, exposureTime: 0.04, distance: 100 },
-    LAT: { kvp: 60, mas: 4, exposureTime: 0.04, distance: 100 },
-    AP: { kvp: 58, mas: 4, exposureTime: 0.04, distance: 100 },
+    AP: { kvp: 60, mas: 4, exposureTime: 0.05, distance: 100 },
+    LAT: { kvp: 60, mas: 4, exposureTime: 0.05, distance: 100 },
   },
+  wrist: {
+    PA: { kvp: 55, mas: 4, exposureTime: 0.05, distance: 100 },
+    LAT: { kvp: 55, mas: 4, exposureTime: 0.05, distance: 100 },
+    OBL: { kvp: 55, mas: 4, exposureTime: 0.05, distance: 100 },
+  },
+  hand: {
+    PA: { kvp: 50, mas: 2.5, exposureTime: 0.04, distance: 100 },
+    LAT: { kvp: 50, mas: 2.5, exposureTime: 0.04, distance: 100 },
+    OBL: { kvp: 50, mas: 2.5, exposureTime: 0.04, distance: 100 },
+  },
+  // Spine
+  thoracic: {
+    AP: { kvp: 80, mas: 15, exposureTime: 0.30, distance: 100 },
+    LAT: { kvp: 85, mas: 20, exposureTime: 0.40, distance: 100 },
+  },
+  lumbar: {
+    AP: { kvp: 80, mas: 20, exposureTime: 0.40, distance: 100 },
+    LAT: { kvp: 90, mas: 30, exposureTime: 0.60, distance: 100 },
+    OBL: { kvp: 85, mas: 25, exposureTime: 0.50, distance: 100 },
+  },
+  // Pelvis & Hip
   pelvis: {
-    PA: { kvp: 80, mas: 20, exposureTime: 0.2, distance: 100 },
-    LAT: { kvp: 90, mas: 25, exposureTime: 0.25, distance: 100 },
-    AP: { kvp: 80, mas: 20, exposureTime: 0.2, distance: 100 },
+    AP: { kvp: 80, mas: 20, exposureTime: 0.40, distance: 100 },
+    LAT: { kvp: 85, mas: 25, exposureTime: 0.50, distance: 100 },
   },
   hip: {
-    PA: { kvp: 78, mas: 16, exposureTime: 0.16, distance: 100 },
-    LAT: { kvp: 82, mas: 18, exposureTime: 0.18, distance: 100 },
-    AP: { kvp: 78, mas: 16, exposureTime: 0.16, distance: 100 },
+    AP: { kvp: 80, mas: 20, exposureTime: 0.40, distance: 100 },
+    LAT: { kvp: 85, mas: 25, exposureTime: 0.50, distance: 100 },
   },
+  // Digestive (Barium studies)
+  esophagus: {
+    AP: { kvp: 100, mas: 15, exposureTime: 0.20, distance: 100 },
+    LAT: { kvp: 100, mas: 18, exposureTime: 0.25, distance: 100 },
+  },
+  stomach: {
+    AP: { kvp: 100, mas: 15, exposureTime: 0.20, distance: 100 },
+    LAT: { kvp: 100, mas: 18, exposureTime: 0.25, distance: 100 },
+  },
+  // Knee & Leg
+  knee: {
+    AP: { kvp: 66, mas: 6, exposureTime: 0.08, distance: 100 },
+    LAT: { kvp: 66, mas: 6, exposureTime: 0.08, distance: 100 },
+    OBL: { kvp: 66, mas: 6, exposureTime: 0.08, distance: 100 },
+  },
+  tibia: {
+    AP: { kvp: 65, mas: 5, exposureTime: 0.07, distance: 100 },
+    LAT: { kvp: 65, mas: 5, exposureTime: 0.07, distance: 100 },
+  },
+  // Ankle & Foot
   ankle: {
-    PA: { kvp: 55, mas: 4, exposureTime: 0.04, distance: 100 },
-    LAT: { kvp: 58, mas: 4, exposureTime: 0.04, distance: 100 },
-    AP: { kvp: 55, mas: 4, exposureTime: 0.04, distance: 100 },
+    AP: { kvp: 60, mas: 4, exposureTime: 0.05, distance: 100 },
+    LAT: { kvp: 60, mas: 4, exposureTime: 0.05, distance: 100 },
+    OBL: { kvp: 60, mas: 4, exposureTime: 0.05, distance: 100 },
+  },
+  foot: {
+    AP: { kvp: 55, mas: 3, exposureTime: 0.04, distance: 100 },
+    LAT: { kvp: 55, mas: 3, exposureTime: 0.04, distance: 100 },
+    OBL: { kvp: 55, mas: 3, exposureTime: 0.04, distance: 100 },
   },
 };
 
@@ -213,36 +402,60 @@ function getTechParams(partId: string, viewId: string): TechParams {
 // Common cases per region
 const COMMON_CASES: Record<string, CommonCase[]> = {
   knee: [
-    { id: 'normal', titleAr: 'ركبة طبيعية', title: 'Normal Knee', badge: 'NORMAL', descAr: 'مفصل سليم، غضاريف سليفة' },
-    { id: 'fracture', titleAr: 'كسر الظنبوب', title: 'Tibial Fracture', badge: 'FRACTURE', descAr: 'كسر في عظم الساق العلوي' },
-    { id: 'dislocation', titleAr: 'خلع الرضفة', title: 'Patellar Dislocation', badge: 'DISLOCATION', descAr: 'خروج عظمة الصابونة من مكانها' },
+    { id: 'normal', titleAr: 'ركبة طبيعية', title: 'Normal Knee', badge: 'NORMAL', descAr: 'مفصل سليم، غضاريف واضحة', desc: 'Healthy joint, visible cartilage' },
+    { id: 'fracture', titleAr: 'كسر الظنبوب', title: 'Tibial Fracture', badge: 'FRACTURE', descAr: 'كسر في عظم الساق العلوي', desc: 'Fracture of upper tibia' },
+    { id: 'dislocation', titleAr: 'خلع الرضفة', title: 'Patellar Dislocation', badge: 'DISLOCATION', descAr: 'خروج عظمة الصابونة من مكانها', desc: 'Kneecap displacement' },
   ],
   shoulder: [
-    { id: 'normal', titleAr: 'كتف طبيعي', title: 'Normal Shoulder', badge: 'NORMAL', descAr: 'مفصل سليم، رباط سليم' },
-    { id: 'fracture', titleAr: 'كسر الترقوة', title: 'Clavicle Fracture', badge: 'FRACTURE', descAr: 'كسر في مفصل الترقوة' },
-    { id: 'dislocation', titleAr: 'خلع الكتف', title: 'Shoulder Dislocation', badge: 'DISLOCATION', descAr: 'خروج رأس العضد من المفصل' },
+    { id: 'normal', titleAr: 'كتف طبيعي', title: 'Normal Shoulder', badge: 'NORMAL', descAr: 'مفصل سليم، رباط سليم', desc: 'Healthy joint, intact ligaments' },
+    { id: 'fracture', titleAr: 'كسر الترقوة', title: 'Clavicle Fracture', badge: 'FRACTURE', descAr: 'كسر في مفصل الترقوة', desc: 'Fracture in clavicle joint' },
+    { id: 'dislocation', titleAr: 'خلع الكتف', title: 'Shoulder Dislocation', badge: 'DISLOCATION', descAr: 'خروج رأس العضد من المفصل', desc: 'Humeral head displacement' },
   ],
   'shoulder-r': [
-    { id: 'normal', titleAr: 'كتف طبيعي', title: 'Normal Shoulder', badge: 'NORMAL', descAr: 'مفصل سليم، رباط سليم' },
-    { id: 'fracture', titleAr: 'كسر الترقوة', title: 'Clavicle Fracture', badge: 'FRACTURE', descAr: 'كسر في مفصل الترقوة' },
-    { id: 'dislocation', titleAr: 'خلع الكتف', title: 'Shoulder Dislocation', badge: 'DISLOCATION', descAr: 'خروج رأس العضد من المفصل' },
+    { id: 'normal', titleAr: 'كتف طبيعي', title: 'Normal Shoulder', badge: 'NORMAL', descAr: 'مفصل سليم، رباط سليم', desc: 'Healthy joint, intact ligaments' },
+    { id: 'fracture', titleAr: 'كسر الترقوة', title: 'Clavicle Fracture', badge: 'FRACTURE', descAr: 'كسر في مفصل الترقوة', desc: 'Fracture in clavicle joint' },
+    { id: 'dislocation', titleAr: 'خلع الكتف', title: 'Shoulder Dislocation', badge: 'DISLOCATION', descAr: 'خروج رأس العضد من المفصل', desc: 'Humeral head displacement' },
   ],
   wrist: [
-    { id: 'normal', titleAr: 'رسغ طبيعي', title: 'Normal Wrist', badge: 'NORMAL', descAr: 'عظام سليفة، مفصل سليم' },
-    { id: 'fracture', titleAr: 'كسر القصبة', title: 'Radius Fracture', badge: 'FRACTURE', descAr: 'كسر كولس في الرسغ' },
+    { id: 'normal', titleAr: 'رسغ طبيعي', title: 'Normal Wrist', badge: 'NORMAL', descAr: 'عظام سليمة، مسافات مفصلية طبيعية', desc: 'Intact bones, normal joint spaces' },
+    { id: 'fracture', titleAr: 'كسر كوليس', title: 'Colles Fracture', badge: 'FRACTURE', descAr: 'كسر في عظم الكعبرة البعيد، شائع عند السقوط', desc: 'Distal radius fracture, common from falls' },
   ],
   'wrist-r': [
-    { id: 'normal', titleAr: 'رسغ طبيعي', title: 'Normal Wrist', badge: 'NORMAL', descAr: 'عظام سليفة، مفصل سليم' },
-    { id: 'fracture', titleAr: 'كسر القصبة', title: 'Radius Fracture', badge: 'FRACTURE', descAr: 'كسر كولس في الرسغ' },
+    { id: 'normal', titleAr: 'رسغ طبيعي', title: 'Normal Wrist', badge: 'NORMAL', descAr: 'عظام سليمة، مسافات مفصلية طبيعية', desc: 'Intact bones, normal joint spaces' },
+    { id: 'fracture', titleAr: 'كسر كوليس', title: 'Colles Fracture', badge: 'FRACTURE', descAr: 'كسر في عظم الكعبرة البعيد، شائع عند السقوط', desc: 'Distal radius fracture, common from falls' },
   ],
   pelvis: [
-    { id: 'normal', titleAr: 'حوض طبيعي', title: 'Normal Pelvis', badge: 'NORMAL', descAr: 'عظام سليفة، مفاصل سليمة' },
-    { id: 'fracture', titleAr: 'كسر الحوض', title: 'Pelvic Fracture', badge: 'FRACTURE', descAr: 'كسر في حلقة الحوض' },
+    { id: 'normal', titleAr: 'حوض طبيعي', title: 'Normal Pelvis', badge: 'NORMAL', descAr: 'عظام سليمة، مفاصل سليمة', desc: 'Intact bones, healthy joints' },
+    { id: 'fracture', titleAr: 'كسر الحوض', title: 'Pelvic Fracture', badge: 'FRACTURE', descAr: 'كسر في حلقة الحوض', desc: 'Fracture in pelvic ring' },
   ],
   ankle: [
-    { id: 'normal', titleAr: 'كاحل طبيعي', title: 'Normal Ankle', badge: 'NORMAL', descAr: 'مفصل سليم، أربطة سليمة' },
-    { id: 'fracture', titleAr: 'كسر الكاحل', title: 'Ankle Fracture', badge: 'FRACTURE', descAr: 'كسر ثنائي الكعب' },
-    { id: 'dislocation', titleAr: 'خلع الكاحل', title: 'Ankle Dislocation', badge: 'DISLOCATION', descAr: 'إزاحة كاملة للمفصل' },
+    { id: 'normal', titleAr: 'كاحل طبيعي', title: 'Normal Ankle', badge: 'NORMAL', descAr: 'مفصل سليم، أربطة سليمة', desc: 'Healthy joint, intact ligaments' },
+    { id: 'fracture', titleAr: 'كسر الكاحل', title: 'Ankle Fracture', badge: 'FRACTURE', descAr: 'كسر ثنائي الكعب', desc: 'Bimalleolar fracture' },
+    { id: 'dislocation', titleAr: 'خلع الكاحل', title: 'Ankle Dislocation', badge: 'DISLOCATION', descAr: 'إزاحة كاملة للمفصل', desc: 'Complete joint dislocation' },
+  ],
+  chest: [
+    { id: 'normal', titleAr: 'صدر طبيعي', title: 'Normal Chest', badge: 'NORMAL', descAr: 'رئتان نقيتان، قلب بحجم طبيعي', desc: 'Clear lungs, normal heart size' },
+    { id: 'fracture', titleAr: 'كسر ضلع', title: 'Rib Fracture', badge: 'FRACTURE', descAr: 'كسر في أحد الأضلاع، عادة من الصدمات', desc: 'Broken rib, usually from trauma' },
+  ],
+  hand: [
+    { id: 'normal', titleAr: 'يد طبيعية', title: 'Normal Hand', badge: 'NORMAL', descAr: 'عظام سليمة، مفاصل طبيعية', desc: 'Intact bones, normal joints' },
+    { id: 'fracture', titleAr: 'كسر في اليد', title: 'Hand Fracture', badge: 'FRACTURE', descAr: 'كسر في عظام اليد', desc: 'Fracture in hand bones' },
+  ],
+  forearm: [
+    { id: 'normal', titleAr: 'ساعد طبيعي', title: 'Normal Forearm', badge: 'NORMAL', descAr: 'عظام سليمة، الكعبرة والزند سليمة', desc: 'Intact radius and ulna' },
+    { id: 'fracture', titleAr: 'كسر الساعد', title: 'Forearm Fracture', badge: 'FRACTURE', descAr: 'كسر في الكعبرة أو الزند', desc: 'Radius or ulna fracture' },
+  ],
+  elbow: [
+    { id: 'normal', titleAr: 'كوع طبيعي', title: 'Normal Elbow', badge: 'NORMAL', descAr: 'مفصل سليم، مسافات مفصلية طبيعية', desc: 'Healthy joint, normal joint spaces' },
+    { id: 'fracture', titleAr: 'كسر الكوع', title: 'Elbow Fracture', badge: 'FRACTURE', descAr: 'كسر في عظام الكوع', desc: 'Fracture in elbow bones' },
+  ],
+  humerus: [
+    { id: 'normal', titleAr: 'عضد طبيعي', title: 'Normal Humerus', badge: 'NORMAL', descAr: 'عظم سليم، لا توجد كسور', desc: 'Intact bone, no fractures' },
+    { id: 'fracture', titleAr: 'كسر العضد', title: 'Humerus Fracture', badge: 'FRACTURE', descAr: 'كسر في عظم العضد', desc: 'Fracture in humerus bone' },
+  ],
+  foot: [
+    { id: 'normal', titleAr: 'قدم طبيعية', title: 'Normal Foot', badge: 'NORMAL', descAr: 'عظام سليمة، مفاصل طبيعية', desc: 'Intact bones, normal joints' },
+    { id: 'fracture', titleAr: 'كسر القدم', title: 'Foot Fracture', badge: 'FRACTURE', descAr: 'كسر في عظام القدم', desc: 'Fracture in foot bones' },
   ],
 };
 
@@ -349,6 +562,7 @@ function RegionView({
 
   const tech = getTechParams(selectedPart.id, selectedView.id);
   const cases = getCases(region.id);
+  const examImage = getExamImage(selectedPart.id, selectedView.id);
 
   const displayLabel = selectedCase ? selectedCase.title : region.label;
   const displayView = selectedCase ? '' : `${selectedView.label === 'LAT' ? 'Lateral' : selectedView.id} View`;
@@ -542,22 +756,33 @@ function RegionView({
           <div className="absolute bottom-6 left-6 w-6 h-6 lg:bottom-8 lg:left-8 lg:w-8 lg:h-8 border-b-2 border-l-2 border-cyan-500/40 rounded-bl-sm" />
           <div className="absolute bottom-6 right-6 w-6 h-6 lg:bottom-8 lg:right-8 lg:w-8 lg:h-8 border-b-2 border-r-2 border-cyan-500/40 rounded-br-sm" />
 
-          {/* Center label */}
-          <div className="text-center select-none px-6">
-            <p className="text-white text-3xl sm:text-4xl lg:text-5xl font-light tracking-wide mb-3 drop-shadow-[0_0_40px_rgba(0,229,255,0.2)]">
-              {displayLabel}
-            </p>
-            {displayView && (
-              <p className="text-cyan-400 text-base lg:text-xl font-light tracking-widest">
-                {displayView}
+          {/* X-ray Image or Center label */}
+          {examImage ? (
+            <div className="absolute inset-0 flex items-center justify-center p-4">
+              <img
+                src={examImage}
+                alt={`${selectedPart.label} X-ray - ${selectedView.label} view`}
+                className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
+                style={{ filter: 'contrast(1.1) brightness(1.05)' }}
+              />
+            </div>
+          ) : (
+            <div className="text-center select-none px-6">
+              <p className="text-white text-3xl sm:text-4xl lg:text-5xl font-light tracking-wide mb-3 drop-shadow-[0_0_40px_rgba(0,229,255,0.2)]">
+                {displayLabel}
               </p>
-            )}
-            {selectedCase && (
-              <div className="mt-4">
-                <Badge type={selectedCase.badge} />
-              </div>
-            )}
-          </div>
+              {displayView && (
+                <p className="text-cyan-400 text-base lg:text-xl font-light tracking-widest">
+                  {displayView}
+                </p>
+              )}
+              {selectedCase && (
+                <div className="mt-4">
+                  <Badge type={selectedCase.badge} />
+                </div>
+              )}
+            </div>
+          )}
 
           {/* DICOM overlay — top left */}
           <div className="absolute top-4 left-4 font-mono text-[9px] text-green-400/60 space-y-0.5 pointer-events-none leading-relaxed">

@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(xcopy *)",
+      "Bash(npm run *)",
+      "Bash(pnpm install)",
+      "Bash(pnpm run *)"
+    ]
+  },
+  "$version": 3
+}
